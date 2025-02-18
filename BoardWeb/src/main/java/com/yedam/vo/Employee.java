@@ -1,4 +1,4 @@
-package com.yedam;
+package com.yedam.vo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,14 +13,14 @@ import java.util.Date;
  *  
  */
 
-public class Employee {
-
+public class Employee { // tbl_employees
+	
 //	field
-	private int empNo;
-	private String empNm;
-	private String telNo;
-	private Date hireDate;
-	private int salary;
+	private int empNo;      //emp_no
+	private String empNm;	// emp_name
+	private String telNo;	//tel_number
+	private Date hireDate;	//hire_date	
+	private int salary;     //salary
 
 //	constructor
 	public Employee() {

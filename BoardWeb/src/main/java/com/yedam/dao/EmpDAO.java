@@ -1,7 +1,7 @@
-package com.yedam;
+package com.yedam.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,27 +10,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.yedam.vo.Employee;
 
+//DATA Access Object
 
-public class EmpDAO {
+public class EmpDAO extends DAO{
 	
-//	Connection 객체
-	Connection getConnect() {
-
-		String url = "jdbc:oracle:thin:@localhost:1521:xe"; // 오라클 DB의 접속 정보.
-		String user = "hr"; // 사용자 정보
-		String password = "hr"; // 비밀번호
-		Connection conn = null;
-		try {
-			// 첫번째 매개변수.(접속정보)
-			Class.forName("oracle.jdbc.driver.OracleDriver");              //jdc에 oracledriver가 있는지 체크
-			conn = DriverManager.getConnection(url, user, password);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return conn;
-
-	}//end of connection
+	
 	
 	public List<Employee> search(Employee emp) {
 		List<Employee> empList = new ArrayList<Employee>();
@@ -40,9 +26,9 @@ public class EmpDAO {
 				+ "order by emp_no desc";
 		try {
 //			Statement stmt = getConnect().createStatement();
-			PreparedStatement stmt = getConnect().prepareStatement(sql);
-			stmt.setString(1, emp.getEmpNm());
-			ResultSet rs = stmt.executeQuery();
+			pstmt = getConnect().prepareStatement(sql);
+			pstmt.setString(1, emp.getEmpNm());
+			rs = pstmt.executeQuery();
 			System.out.println(sql);
 			while (rs.next()) {
 				Employee empl = new Employee();
@@ -61,7 +47,7 @@ public class EmpDAO {
 		}
 		return empList;
 	}
-	//단건 조회 empNo
+	//상세 조회 empNo
 	public Employee	selectEmp(int empNo) {
 		Employee emp = new Employee();
 		

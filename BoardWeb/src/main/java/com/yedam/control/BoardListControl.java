@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.HTML;
 
 import com.yedam.dao.BoardDAO;
 import com.yedam.vo.BoardVO;
@@ -33,7 +34,9 @@ public class BoardListControl implements Control {
 		req.setAttribute("list", list);
 		
 //			요청 재지정 (url: boardList.do(boardList.jsp))
-		req.getRequestDispatcher("boardList.jsp").forward(req, resp);
+//		HTML jsp 페이지를 WEB-INF아래의 폴더로 이동시켜 .html 혹은 .jsp방식으로 접속하지 않고
+//		.do 방식으로 무조건 컨트롤러를 거쳐 들어오게 한다.
+		req.getRequestDispatcher("/WEB-INF/views/boardList.jsp").forward(req, resp);
 
 	}
 

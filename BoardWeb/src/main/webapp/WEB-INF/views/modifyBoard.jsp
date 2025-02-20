@@ -7,9 +7,9 @@
 BoardVO board = (BoardVO) request.getAttribute("board");
 %>
 
-<form action="">
+<form action="modifyBoard.do">
+	<input type="hidden" name="bno" value="<%=board.getBoardNo()%>">
 	<table class="table">
-
 		<tr>
 			<th>글번호</th>
 			<td><%=board.getBoardNo()%></td>
@@ -18,12 +18,12 @@ BoardVO board = (BoardVO) request.getAttribute("board");
 		</tr>
 		<tr>
 			<th >제목</th>
-			<td colspan="3"><input class="form-control" value="<%=board.getTitle()%>"
+			<td colspan="3"><input name="title" class="form-control" value="<%=board.getTitle()%>"
 				type="text"></td>
 		</tr>
 		<tr>
 			<th >내용</th>
-			<td><textarea colspan="3" class="form-control" ><%=board.getContent()%></textarea></td>
+			<td colspan="3"><textarea name="content" class="form-control" ><%=board.getContent()%></textarea></td>
 		</tr>
 		<tr>
 			<th>작성자</th>
@@ -32,7 +32,7 @@ BoardVO board = (BoardVO) request.getAttribute("board");
 			<td><%=board.getWriteDate()%></td>
 		</tr>
 		<tr>
-			<td colspan="3" align="center">
+			<td colspan="4" align="center">
 				<button type="submit" class="btn btn-success">수정</button>
 				
 			</td>

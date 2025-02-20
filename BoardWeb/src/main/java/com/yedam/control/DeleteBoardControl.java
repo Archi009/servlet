@@ -6,27 +6,25 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yedam.pageVO;
-import com.yedam.control.Control;
 import com.yedam.dao.BoardDAO;
-import com.yedam.vo.BoardVO;
 
-public class BoardControl implements Control {
+public class DeleteBoardControl implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String bno = req.getParameter("bno");
-		
+
 		BoardDAO bdao = new BoardDAO();
-		bdao.updateCount(Integer.parseInt(bno));
-		BoardVO board = bdao.getBaord(Integer.parseInt(bno));
-		req.setAttribute("board", board);
-		
-		
-		
-		
-		req.getRequestDispatcher("/WEB-INF/views/board.jsp").forward(req, resp);
-		
+
+		boolean r = bdao.deleteBoard(Integer.parseInt(bno));
+
+		if (r) {
+			System.out.println("삭제 성공");
+			resp.sendRedirect("boardList.do");
+		} else {
+			System.out.println("삭제 실패");
+		}
+
 	}
 
 }

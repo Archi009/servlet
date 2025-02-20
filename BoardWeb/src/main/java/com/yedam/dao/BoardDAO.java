@@ -13,6 +13,23 @@ import com.yedam.vo.BoardVO;
  */
 public class BoardDAO extends DAO{
 	
+	public int getTotalCount() {
+		String sql ="select count(1) from tbl_board";
+		try {
+			pstmt = getConnect().prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+			 return	rs.getInt(1); // count(1)값
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			disConnect();
+		}
+		return 0; //조회정보 없음.
+	}
+	
 //	조회수 증가
 	public void updateCount(int baordNo) {
 		String sql = "update tbl_board set view_count = view_count +1 where board_no = ?";
@@ -31,7 +48,10 @@ public class BoardDAO extends DAO{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally { //정상 실행이건 예외 발생이건 진행한다.
+			disConnect();
 		}
+		
 		
 	}
 	
@@ -64,6 +84,8 @@ public class BoardDAO extends DAO{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			disConnect();
 		}
 				
 		
@@ -73,12 +95,17 @@ public class BoardDAO extends DAO{
 	
 	
 	//조회
-	public List<BoardVO>selectBoard() throws SQLException{
+	public List<BoardVO>selectBoard(int page) throws SQLException{
 		List<BoardVO>list = new ArrayList<BoardVO>();
-		String sql = "select * from tbl_board order by 1 desc ";
+		String sql = "select * from "
+			+"	(select rownum rn, a.* "
+			+"			from (select * from tbl_board order by board_no desc) a) b "
+			+"			where b.rn>= (? - 1)*5 +1 and b.rn<= (? *5)";
+		
 		
 		pstmt = getConnect().prepareStatement(sql);
-		System.out.println(sql);
+		pstmt.setInt(1, page);
+		pstmt.setInt(2, page);
 		rs = pstmt.executeQuery();
 		while(rs.next()) {
 			BoardVO br = new BoardVO();
@@ -88,10 +115,12 @@ public class BoardDAO extends DAO{
 			br.setWriter(rs.getString("writer"));
 			br.setWriteDate(rs.getDate("write_date"));
 			br.setViewCount(rs.getInt("view_count"));
-			System.out.println(br.getTitle());
+			
+			
 			list.add(br);
 		}
 		
+		disConnect();
 		return list;
 	}
 	//추가
@@ -113,6 +142,8 @@ public class BoardDAO extends DAO{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			disConnect();
 		}
 		
 		
@@ -122,7 +153,20 @@ public class BoardDAO extends DAO{
 	//삭제
 	public boolean deleteBoard(int boardNo) {
 		String query =  "delete from tbl_board where board_no = ?";
-		
+		try {
+			pstmt = getConnect().prepareStatement(query);
+			pstmt.setInt(1, boardNo);
+			int r = pstmt.executeUpdate();
+			
+			if(r>0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			disConnect();
+		}
 		return false;
 	}
 	
@@ -143,9 +187,13 @@ public class BoardDAO extends DAO{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			disConnect();
 		}
 		
 		
 		return false;
 	}
+
+	
 }

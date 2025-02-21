@@ -1,27 +1,34 @@
-<%@page import="com.yedam.pageVO"%>
-<%@page import="com.yedam.vo.BoardVO"%>
-<%@page import="java.util.List"%>
+
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="includes/Header.jsp"></jsp:include>
 <!-- html 주석 -->
-
-<%
-//boardList.do -> reauest -> boardList.jsp
-String result = (String) request.getAttribute("msg");
-List<BoardVO> list = (List<BoardVO>) request.getAttribute("list");
-
-//Control에서 pagin 의 값을 얻어오기.
-pageVO paging = (pageVO) request.getAttribute("paging");
-%>
-<p>
-	controller로 부터 받아온 msg의 값은
-	<%=result%>
-</p>
-<p>
-	페이지 값은
-	<%=paging%>
+<h1>게시글 목록 (boardList.jsp)</h1>
+<form action="boardList.do">
+<div class="center">
+	<div class="row">
+	<div class="col-sm-4">
+		<select name="searchCondition" class="form-control">
+			<option value="">선택하세요</option>
+			<option value="T" ${searchCondition == "T" ? "selected" : "" }>제목</option>
+			<option value="W" ${searchCondition == "W" ? "selected" : "" }>작성자</option>
+			<option value="TW" ${searchCondition == "TW" ? "selected" : "" }>제목&작성자</option>
+		</select>
+	</div>
+<div class="col-sm-5">
+		
+		<input type="text" name="keyword" class="form-control" id="search" value="${keyword }">
+	</div>
+	<div class="col-sm-2">
+		<input type="submit" value="조회" class="btn btn-success">
+	</div>
+</div>
+</div>
+</form>
+<p>controller로 부터 받아온 msg의 값은 ${msg }</p>
+<p>페이지 값은 ${paging }</p>
 <table class="table table-striped table-hover">
 	<thead>
 		<tr>
@@ -34,61 +41,62 @@ pageVO paging = (pageVO) request.getAttribute("paging");
 		</tr>
 	</thead>
 	<tbody>
-		<%
-		for (BoardVO board : list) {
-		%>
-		<tr>
-			<td><%=board.getBoardNo()%></td>
-			<td><a href="board.do?bno=<%=board.getBoardNo()%>"><%=board.getTitle()%></a></td>
-			<td><%=board.getContent()%></td>
-			<td><%=board.getWriter()%></td>
-			<td><%=board.getWriteDate()%></td>
-			<td><%=board.getViewCount()%></td>
-		</tr>
+		<c:forEach var="board" items="${list }">
+			<tr>
+				<td><c:out value="${ board.boardNo}"></c:out></td>
+				<td><a href="board.do?bno=${ board.boardNo}&searchCondition=${searchCondition}&keyword=${keyword}"><c:out
+							value="${ board.title}"></c:out></a></td>
+				<td><c:out value="${ board.content}"></c:out></td>
+				<td><c:out value="${ board.writer}"></c:out></td>
+				<td><c:out value="${ board.writeDate}"></c:out></td>
+				<td><c:out value="${ board.viewCount}"></c:out></td>
+			</tr>
 
-		<%
-		}
-		%>
+		</c:forEach>
 	</tbody>
 </table>
 <!-- paging 시작. -->
 <ul class="pagination">
-	<%
-	if (paging.isPrev()) {
-	%>
-	<li class="page-item">
-		<%
-		} else {
-		%>
-	
-	<li class="page-item disabled ">
-		<%
-		}
-		%> <a class="page-link"
-		href="boardList.do?page=<%=paging.getStartPage() - 1%>">Previous</a>
-	</li>
-	<%
-	for (int i = paging.getStartPage(); i <= paging.getEndPage(); i++) {
-		if (i == paging.getCurrentPage()) {
-	%>
-	<li class="page-item active" aria-current="page"><span
-		class="page-link"><%=i%></span></li>
-	<%
-	} else {
-	%>
-	<li class="page-item"><a class="page-link"
-		href="boardList.do?page=<%=i%>"><%=i%></a></li>
-	<%
-	}
-	}
-	%>
-	<%
-	if (paging.isNext() ) {
-	%>
-	<li class="page-item" ><%}else{ %>
-	<li class="page-item disabled">
-	<%} %>
-	<a class="page-link" href="boardList.do?page=<%=paging.getEndPage() + 1%>">Next</a></li>
+	<c:choose>
+		<c:when test="${paging.prev}">
+			<li class="page-item"><a class="page-link"
+				href="boardList.do?page=${paging.startPage - 1}&searchCondition=${searchCondition }&keyword=${keyword }">Previous</a></li>
+		</c:when>
+		<c:otherwise>
+			<li class="page-item disabled "><span class="page-link">Previous</span>
+			</li>
+		</c:otherwise>
+	</c:choose>
+
+
+	<c:forEach var="p" begin="${paging.startPage}" end="${paging.endPage}">
+		<c:choose>
+			<c:when test="${p == paging.currentPage}">
+
+
+				<li class="page-item active" aria-current="page"><span
+					class="page-link"><c:out value="${p }"></c:out></span></li>
+
+			</c:when>
+			<c:otherwise>
+
+				<li class="page-item"><a class="page-link"
+					href="boardList.do?page=${p }&searchCondition=${searchCondition }&keyword=${keyword }"><c:out value="${p }"></c:out></a></li>
+
+			</c:otherwise>
+		</c:choose>
+	</c:forEach>
+	<c:choose>
+		<c:when test="${paging.next} ">
+			<li class="page-item"><a class="page-link"
+				href="boardList.do?page=${paging.endPage + 1}&searchCondition=${searchCondition }&keyword=${keyword }">Next</a></li>
+		</c:when>
+		<c:otherwise>
+			<li class="page-item disabled"><span class="page-link">Next</span>
+			</li>
+		</c:otherwise>
+	</c:choose>
+
 </ul>
 <!-- paging 끝. -->
 

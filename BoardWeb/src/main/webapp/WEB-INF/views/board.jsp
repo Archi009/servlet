@@ -1,38 +1,42 @@
-<%@page import="com.yedam.vo.BoardVO"%>
+
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:include page="includes/Header.jsp"></jsp:include>
-<%
-BoardVO board = (BoardVO) request.getAttribute("board");
-String msg = (String) request.getAttribute("msg");
-String logId = (String) session.getAttribute("loginId");
-%>
-<h3>상세화면(board.jsp)
 
-</h3>
+
+<h3>상세화면(board.jsp)</h3>
+${"Expression Language" }
+<p>BoardVO 객체의 값 => ${board }</p>
+<p>String 객체의 값 => ${msg }</p>
+<p>String 객체의 값 => ${loginId }</p>
 <form action="modifyForm.do">
-	<input type="hidden" name="bno" value="<%=board.getBoardNo()%>">
+	<input type="hidden" name="bno" value="${board.boardNo}">
 	<table class="table">
 		<tr>
 			<th>글번호</th>
-			<td><%=board.getBoardNo()%></td>
+			<td><c:out value="${ board.boardNo}"></c:out> </td>
 			<th>조회수</th>
-			<td><%=board.getViewCount()%></td>
+			<td><c:out value="${board.viewCount}"></c:out></td>
 		</tr>
 		<tr>
 			<th >제목</th>
-			<td colspan="3"><%=board.getTitle()%></td>
+			<td colspan="3"><c:out value="${board.title}"></c:out></td>
 		</tr>
 		<tr>
 			<th >내용</th>
-			<td colspan="3"><%=board.getContent()%></td>
+			<td colspan="3"><c:out value="${board.content}"></c:out></td>
 		</tr>
 		<tr>
 			<th>작성자</th>
-			<td><%=board.getWriter()%></td>
+			<td><c:out value="${board.writer}"></c:out></td>
 			<th>작일시</th>
-			<td><%=board.getWriteDate()%></td>
+			<td><c:out value="${board.writeDate}"></c:out></td>
+		</tr>
+		<tr>
+			<th >이미지</th>
+			<td colspan="4"><img src="images/${board.img}"></td>
 		</tr>
 		<tr>
 			<td colspan="4" align="center">
@@ -40,17 +44,17 @@ String logId = (String) session.getAttribute("loginId");
 				<button type="button" id="delBtn" class="btn btn-warning">삭제</button>
 			</td>
 		</tr>
-		<%if(msg != null){ %>
-		<tr align="center">
+<c:if test="${msg != null}" >
+<tr align="center">
 <td  colspan="4" style="color:red; font-weight:bolder;" >
-<%=msg %>
+${msg }
 </td>
 </tr>
-<%} %>
+</c:if>
 	</table>
 </form>
 <script >
-let logid = "<%=logId %>"
+let logid = "${loginId}"
 const bno = document.querySelector("input[name = 'bno']");
 const user = document.querySelector("table.table>tbody>tr:nth-of-type(4)>td").innerHTML
 function delBoardAjax(){
@@ -58,7 +62,7 @@ function delBoardAjax(){
 	console.log(user)
 	console.log(logid)
 	if(user==logid){
-  location.href="deleteBoard.do?bno="+bno.value
+  location.href="deleteBoard.do?bno="+bno.value+"&searchCondition=${searchCondition }&keyword=${keyword }"
 		
 	}else{
 		alert("권한을 확인하세요")

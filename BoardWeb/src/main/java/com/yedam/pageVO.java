@@ -20,6 +20,7 @@ public class pageVO {
 		this.startPage = endPage - 9;// 계산상의 start, end
 		
 		int realEnd = (int) Math.ceil(totalCnt / 5.0); //실제 마지막 페이지
+		System.out.println("real"+realEnd);
 		this.endPage = endPage > realEnd ? realEnd : endPage;
 		
 		prev = startPage == 1 ? false : true;

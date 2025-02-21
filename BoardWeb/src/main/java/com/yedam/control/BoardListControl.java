@@ -9,28 +9,41 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.html.HTML;
 
+import org.apache.el.parser.AstGreaterThanEqual;
+
 import com.yedam.pageVO;
 import com.yedam.dao.BoardDAO;
 import com.yedam.vo.BoardVO;
+import com.yedam.vo.SearchVO;
+
+import oracle.jdbc.internal.KeywordValue;
 
 public class BoardListControl implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//boardList.do?searchCondition=title&keyword=관심길+51-20
+		
 		String page = req.getParameter("page");
+		String sc = req.getParameter("searchCondition");
+		String kw = req.getParameter("keyword");
 		page = page == null ? "1" : page;
+		sc = sc == null ? "" : sc;
+		kw = kw == null ? "" : kw;
+		System.out.println(kw);
 		
 		System.out.println(page);
 		String name = "홍길동";
 		// boardList.do -> (BaordListControl) -> boardList.jsp
-
+		
+		SearchVO sr = new SearchVO(Integer.parseInt(page),sc,kw);
 		req.setAttribute("msg", name);
 
 		BoardDAO edao = new BoardDAO();
 		List<BoardVO> list = null;
 		
 		try {
-			list = edao.selectBoard(Integer.parseInt(page));
+			list = edao.selectBoard(sr);
 		} catch (NumberFormatException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,9 +52,12 @@ public class BoardListControl implements Control {
 		req.setAttribute("list", list);
 		
 		//페이징
-		int totalCnt = edao.getTotalCount();
+		int totalCnt = edao.getTotalCount(sr);
 		pageVO paging = new pageVO(Integer.parseInt(page), totalCnt);
 		req.setAttribute("paging", paging);
+//		searchCondition, Keyword 전달
+		req.setAttribute("searchCondition", sc);
+		req.setAttribute("keyword", kw);
 		
 		
 		

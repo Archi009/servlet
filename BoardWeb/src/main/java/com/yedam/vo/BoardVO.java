@@ -16,6 +16,7 @@ public class BoardVO {
 	private String title; //title
 	private String content; //content
 	private String writer; //writer
+	private String img; // images
 	private Date writeDate; // write_date
 	private int viewCount; //view_count
 	

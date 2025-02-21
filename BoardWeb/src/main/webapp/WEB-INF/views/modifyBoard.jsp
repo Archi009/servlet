@@ -19,11 +19,11 @@ BoardVO board = (BoardVO) request.getAttribute("board");
 		<tr>
 			<th >제목</th>
 			<td colspan="3"><input name="title" class="form-control" value="<%=board.getTitle()%>"
-				type="text"></td>
+				type="text" required></td>
 		</tr>
 		<tr>
 			<th >내용</th>
-			<td colspan="3"><textarea name="content" class="form-control" ><%=board.getContent()%></textarea></td>
+			<td colspan="3"><textarea name="content" class="form-control" required><%=board.getContent()%></textarea></td>
 		</tr>
 		<tr>
 			<th>작성자</th>

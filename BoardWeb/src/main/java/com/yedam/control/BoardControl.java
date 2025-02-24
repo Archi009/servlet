@@ -31,7 +31,7 @@ public class BoardControl implements Control {
 		System.out.println(keyword);
 		System.out.println(searchCondition);
 		
-		req.getRequestDispatcher("/WEB-INF/views/board.jsp").forward(req, resp);
+		req.getRequestDispatcher("board/board.tiles").forward(req, resp);
 		
 	}
 

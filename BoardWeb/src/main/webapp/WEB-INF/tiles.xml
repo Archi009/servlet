@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<!-- 실제 보여지는 페이지는 classic.jsp라는 템플릿인데, 그 템플릿의 형식에 맞춰 header menu body footer 
+		들이 위치한다. -->
+	<definition name="myapp.homepage"
+		template="/layouts/classic.jsp">
+		<put-attribute name="title"
+			value="Tiles tutorial homepage" />
+		<put-attribute name="header" value="/tiles/banner.jsp" />
+		<put-attribute name="menu"
+			value="/tiles/common_menu.jsp" />
+		<put-attribute name="body" value="/tiles/home_body.jsp" />
+		<put-attribute name="footer" value="/tiles/credits.jsp" />
+	</definition>
+	<!-- board 적용. -->
+	<!-- user용 -->
+	<definition name="myapp.user"
+		template="/WEB-INF/layout/template.jsp">
+		<put-attribute name="title"
+			value="일반 사용자 템플릿" />
+		<put-attribute name="header" value="/WEB-INF/tiles/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/tiles/body.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/tiles/footer.jsp" />
+	</definition>
+	
+	<!-- admin용 -->
+	<definition name="myapp.admin"
+		template="/WEB-INF/admin/template.jsp">
+		<put-attribute name="title"
+			value="일반 사용자 템플릿" />
+		<put-attribute name="header" value="/WEB-INF/admin/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/admin/body.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/admin/footer.jsp" />
+	</definition>
+	
+	<!-- wildcard==== *의 위치의 String을 순서에 따라 {1} {2} {3}따위로 매칭시킨다.  -->
+	<definition name="WILDCARD:body/*" extends="myapp.user">
+		<put-attribute name="body" value="/WEB-INF/tiles/{1}.jsp" />
+	</definition>
+	<!--  
+	<definition name="WILDCARD:board/*" extends="myapp.user">
+		<put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+	</definition>-->
+	
+	<definition name="WILDCARD:admin/*" extends="myapp.admin">
+		<put-attribute name="body" value="/WEB-INF/views/member/{1}.jsp" />
+	</definition>
+	<definition name="WILDCARD:*/*" extends="myapp.user">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+</tiles-definitions>

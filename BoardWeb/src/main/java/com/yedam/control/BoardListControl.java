@@ -54,6 +54,7 @@ public class BoardListControl implements Control {
 		//페이징
 		int totalCnt = edao.getTotalCount(sr);
 		pageVO paging = new pageVO(Integer.parseInt(page), totalCnt);
+		System.out.println(page + " " +totalCnt);
 		req.setAttribute("paging", paging);
 //		searchCondition, Keyword 전달
 		req.setAttribute("searchCondition", sc);
@@ -65,7 +66,7 @@ public class BoardListControl implements Control {
 //			요청 재지정 (url: boardList.do(boardList.jsp))
 //		HTML jsp 페이지를 WEB-INF아래의 폴더로 이동시켜 .html 혹은 .jsp방식으로 접속하지 않고
 //		.do 방식으로 무조건 컨트롤러를 거쳐 들어오게 한다.
-		req.getRequestDispatcher("/WEB-INF/views/boardList.jsp").forward(req, resp);
+		req.getRequestDispatcher("board/boardList.tiles").forward(req, resp);
 
 	}
 

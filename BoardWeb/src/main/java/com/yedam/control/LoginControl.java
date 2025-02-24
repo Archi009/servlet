@@ -18,7 +18,7 @@ public class LoginControl implements Control {
 		if(req.getMethod().equals("GET")) {
 			
 			//		로그인 화면.
-			req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
+			req.getRequestDispatcher("WEB-INF/views/member/login.jsp").forward(req, resp);
 		}else if(req.getMethod().equals("POST")) {
 //			로그인 기능
 			
@@ -33,7 +33,12 @@ public class LoginControl implements Control {
 				//세션에 로그인 값 저장
 				HttpSession session = req.getSession();
 				session.setAttribute("loginId", id);
-				resp.sendRedirect("boardList.do");
+				if(mvo.getResponsibiliy().equals("Admin")) {
+					resp.sendRedirect("memberList.do");
+				}else {
+					
+					resp.sendRedirect("boardList.do");
+				}
 			}else {
 				System.out.println("아이디 패스워드 확인필요");
 			}

@@ -28,12 +28,12 @@ public class ModifyControl implements Control {
 		if(!id.equals(boardId)) {
 			req.setAttribute("msg", "권한을 확인하세요.");
 			req.setAttribute("board", board);
-			req.getRequestDispatcher("/WEB-INF/views/board.jsp").forward(req, resp);
+			req.getRequestDispatcher("board/board.tiles").forward(req, resp);
 			return;
 		}
 		
 		req.setAttribute("board", board);	
-		req.getRequestDispatcher("/WEB-INF/views/modifyBoard.jsp").forward(req, resp);
+		req.getRequestDispatcher("board/modifyBoard.tiles").forward(req, resp);
 
 	}
 

@@ -2,8 +2,8 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<jsp:include page="includes/Header.jsp"></jsp:include>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!-- html 주석 -->
 <h1>게시글 목록 (boardList.jsp)</h1>
 <form action="boardList.do">
@@ -87,7 +87,7 @@
 		</c:choose>
 	</c:forEach>
 	<c:choose>
-		<c:when test="${paging.next} ">
+		<c:when test="${paging.next }">
 			<li class="page-item"><a class="page-link"
 				href="boardList.do?page=${paging.endPage + 1}&searchCondition=${searchCondition }&keyword=${keyword }">Next</a></li>
 		</c:when>
@@ -96,8 +96,8 @@
 			</li>
 		</c:otherwise>
 	</c:choose>
-
+	
 </ul>
 <!-- paging 끝. -->
 
-<jsp:include page="includes/Footer.jsp"></jsp:include>
+

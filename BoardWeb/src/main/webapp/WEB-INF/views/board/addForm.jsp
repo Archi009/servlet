@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:include page="includes/Header.jsp"></jsp:include>
+
 
 <h3>글등록화면(addForm.jsp)</h3>
 <!-- form 태그엔  enctype = "application/x-www-form-urlencoded" 가 기본으로 설정돼있다.(저 형식으로 보내겠다)
@@ -38,4 +38,3 @@
 
 </form>
 
-<jsp:include page="includes/Footer.jsp"></jsp:include>

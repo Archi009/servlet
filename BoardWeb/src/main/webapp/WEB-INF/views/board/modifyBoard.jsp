@@ -1,7 +1,7 @@
 <%@page import="com.yedam.vo.BoardVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<jsp:include page="includes/Header.jsp"></jsp:include>
+
 <h3>수정화면 (modify).jsp)</h3>
 <%
 BoardVO board = (BoardVO) request.getAttribute("board");
@@ -39,4 +39,3 @@ BoardVO board = (BoardVO) request.getAttribute("board");
 		</tr>
 	</table>
 </form>
-<jsp:include page="includes/Footer.jsp"></jsp:include>

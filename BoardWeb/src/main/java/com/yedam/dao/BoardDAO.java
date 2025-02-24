@@ -13,7 +13,7 @@ import com.yedam.vo.SearchVO;
  * Create, Read, Update, Delete
  */
 public class BoardDAO extends DAO{
-	
+	//페이징
 	public int getTotalCount(SearchVO sr) {
 		String sql ="select count(1) from tbl_board";
 		if(sr.getSearchCondition().equals("T")) {

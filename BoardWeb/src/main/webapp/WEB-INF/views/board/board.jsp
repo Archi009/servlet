@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<jsp:include page="includes/Header.jsp"></jsp:include>
+
 
 
 <h3>상세화면(board.jsp)</h3>
@@ -72,4 +72,3 @@ function delBoardAjax(){
 
 
 document.querySelector("#delBtn").addEventListener("click",delBoardAjax)</script>
-<jsp:include page="includes/Footer.jsp"></jsp:include>

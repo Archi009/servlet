@@ -25,6 +25,7 @@ public class pageVO {
 		
 		prev = startPage == 1 ? false : true;
 		next = endPage == realEnd ? false : true;
+		System.out.println(next);
 	}
 	
 	

@@ -7,6 +7,30 @@ import java.util.List;
 import com.yedam.vo.MemberVO;
 
 public class MemberDAO extends DAO {
+	public boolean addMember(String id,String pw,String name) {
+		String sql = "insert into tbl_member (member_id, passwd, member_name)"
+				+ " values(?,?,?)";		
+		
+		try {
+			pstmt = getConnect().prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+			pstmt.setString(3, name);
+			
+			int r = pstmt.executeUpdate();
+			if(r>0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return false;
+	}
+	
+	
 	public List<MemberVO> members () {
 		String sql = "select member_id "
 				+ "   ,passwd "
@@ -77,9 +101,15 @@ public class MemberDAO extends DAO {
 		return null;
 	}
 	public boolean deleteMember(String id) {
+		System.out.println(id);
 		String sql = "delete from tbl_member where member_id = ?";
 		try {
 			pstmt = getConnect().prepareStatement(sql);
+			pstmt.setString(1, id);
+			int r = pstmt.executeUpdate();
+			if(r>0) {
+				return true;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

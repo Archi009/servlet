@@ -53,8 +53,46 @@ ${msg }
 </c:if>
 	</table>
 </form>
+
+<style>
+.reply .content ul{
+	list-style: none;
+}
+.reply .content span{
+	display: inline-block;
+}
+</style>
+<!-- 댓글 관리 -->
+ <div class="container reply">
+	 <!--댓글 등록--> 
+	<dib class="header">
+		<input type="text" id="reply" class="col-sm-9">	
+		<button id="addReply" class="btn btn-danger">댓글등록</button>
+		
+	</dib>
+
+	 <!--댓글 목록--> 
+	<div class="content">
+		<ul>
+			<li>
+				<span class="col-sm-2">글번호</span>
+				<span class="col-sm-5">글내용</span>
+				<span class="col-sm-2">작성자</span>
+				<span class="col-sm-2">삭제</span>
+			</li>
+			
+		</ul>
+	</div>
+
+	 <!--댓글페이징--> 
+	 <div class="footer">
+
+	 </div>
+	</div>
+
 <script >
 let logid = "${loginId}"
+const bnos = "${board.boardNo}"
 const bno = document.querySelector("input[name = 'bno']");
 const user = document.querySelector("table.table>tbody>tr:nth-of-type(4)>td").innerHTML
 function delBoardAjax(){
@@ -71,4 +109,9 @@ function delBoardAjax(){
 }
 
 
-document.querySelector("#delBtn").addEventListener("click",delBoardAjax)</script>
+document.querySelector("#delBtn").addEventListener("click",delBoardAjax)
+</script>
+
+
+<script src="js/replyService.js"></script>
+<script src="js/reply.js"></script>

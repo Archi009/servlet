@@ -56,7 +56,7 @@
 	</tbody>
 </table>
 <!-- paging 시작. -->
-<ul class="pagination">
+<ul class="pagination justify-content-center">
 	<c:choose>
 		<c:when test="${paging.prev}">
 			<li class="page-item"><a class="page-link"

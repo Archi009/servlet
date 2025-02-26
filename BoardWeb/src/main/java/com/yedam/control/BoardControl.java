@@ -16,6 +16,8 @@ public class BoardControl implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		
 		String bno = req.getParameter("bno");
 		String searchCondition = req.getParameter("searchCondition");
 		String keyword = req.getParameter("keyword");

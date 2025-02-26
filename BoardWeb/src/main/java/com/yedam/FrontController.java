@@ -17,6 +17,8 @@ import com.yedam.control.AddReplyControl;
 import com.yedam.control.AjaxControl;
 import com.yedam.control.BoardControl;
 import com.yedam.control.BoardListControl;
+import com.yedam.control.ChartControl;
+import com.yedam.control.ChartDataControl;
 import com.yedam.control.Control;
 import com.yedam.control.DataControl;
 import com.yedam.control.DeleteBoardControl;
@@ -27,6 +29,7 @@ import com.yedam.control.ModifyBoardControl;
 import com.yedam.control.ModifyControl;
 import com.yedam.control.RemoveMemberControl;
 import com.yedam.control.RemoveReplyControl;
+import com.yedam.control.ReplyCntControl;
 import com.yedam.control.ReplyListControl;
 
 /*
@@ -71,6 +74,11 @@ public class FrontController extends HttpServlet{
 		map.put("/replyList.do",new ReplyListControl());
 		map.put("/addReply.do",new AddReplyControl());
 		map.put("/removeReply.do", new RemoveReplyControl());
+		map.put("/getReplyCnt.do", new ReplyCntControl());
+//		차트
+		map.put("/chart.do", new ChartControl());
+		map.put("/chartData.do", new ChartDataControl());
+		
 	}
 	
 	

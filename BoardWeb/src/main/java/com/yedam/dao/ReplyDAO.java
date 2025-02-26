@@ -1,21 +1,88 @@
 package com.yedam.dao;
 
+import java.lang.reflect.WildcardType;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.yedam.vo.ReplyVO;
 
 //댓글 목록, 등록 , 삭제 , 상세조회.
 public class ReplyDAO extends DAO {
+	
+//	부서별 인원현황 차트.
+	public List<Map<String, Object>> chartData() {
+		String sql ="select e.department_id , d.department_name, count(1) cnt "
+				+ "from employees e  "
+				+ "join departments d "
+				+ "on e.department_id = d.department_id "
+				+ "group by e.department_id, d.department_name";
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		
+		try {
+			pstmt = getConnect().prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Map<String, Object> map = new HashMap<>();
+				map.put("dep_count", rs.getInt(3));
+				map.put("dep_name", rs.getString(2));
+				list.add(map);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			disConnect();
+		}
+		
+		return list;
+	}
+	
+	
+	
+	public int replyCount(int baordNo) {
+		String sql = "select count(1) from tbl_reply where board_no = ?";
+		
+		try {
+			pstmt = getConnect().prepareStatement(sql);
+			pstmt.setInt(1, baordNo);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getInt(1);//첫번째 칼럼
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			disConnect();
+		}
+		return 0;
+		
+		
+		
+	}
+	
+	
 	//목록.
-	public List<ReplyVO> replyList (int boardNo){
+	public List<ReplyVO> replyList (int boardNo, int page){
 		List<ReplyVO> rp=new ArrayList<>();
-		String sql = "select reply_no, reply, replyer, reply_date from tbl_reply where board_no = ?";
+		String sql = "SELECT tbl_a.*\r\n"
+				+ "FROM(SELECT /*+ INDEX_DESC (r pk_reply) */ "
+				+ "        rownum rn, reply_no, reply, replyer, board_no, reply_date "
+				+ "FROM tbl_reply r  "
+				+ "WHERE board_no = ?) tbl_a "
+				+ "WHERE tbl_a.rn > (? -1) *5 "
+				+ "and tbl_a.rn<= ? * 5 ";
 		
 		try {
 			pstmt = getConnect().prepareStatement(sql);
 			pstmt.setInt(1, boardNo);
+			pstmt.setInt(2, page);
+			pstmt.setInt(3, page);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				ReplyVO vo = new ReplyVO();
@@ -30,6 +97,8 @@ public class ReplyDAO extends DAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			disConnect();
 		}
 		
 		
@@ -53,6 +122,8 @@ public class ReplyDAO extends DAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			disConnect();
 		}
 	
 		return vo;
@@ -86,6 +157,8 @@ public class ReplyDAO extends DAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			disConnect();
 		}
 		
 		return false;
@@ -105,6 +178,8 @@ public class ReplyDAO extends DAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			disConnect();
 		}
 		
 		return false;

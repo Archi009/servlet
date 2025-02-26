@@ -20,18 +20,18 @@ public class ReplyListControl implements Control {
 		resp.setContentType("text/json;charset=utf-8");
 		//원본 글 번호
 		String bno = req.getParameter("bno");
-		
+		String page = req.getParameter("page");
 //		DAO활용
 		ReplyDAO rdao = new ReplyDAO();
-		List<ReplyVO> list = rdao.replyList(Integer.parseInt(bno));
+		List<ReplyVO> list = rdao.replyList(Integer.parseInt(bno),Integer.parseInt(page));
 		
 //		Gson 활용
 //		Gson gson = new GsonBuilder().setPrettyPrinting().create();콘솔에 이쁘게 보여줌
 		Gson gson = new GsonBuilder().create();
 		String json = gson.toJson(list);  // 자바객체 => json 문자열
 		
-		System.out.println(json);//콘솔
-		resp.getWriter().print(json);//우ㅐㅂ브라우져
+//		System.out.println(json);//콘솔
+		resp.getWriter().print(json);//웹브라우져
 		
 		
 	}

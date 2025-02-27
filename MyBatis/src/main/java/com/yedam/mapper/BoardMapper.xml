@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.mapper.BoardMapper">
+ <!-- mapper.xml에 namespace라는 class를 만들고 selectAll이라는 메소드의 반환값은 com.yedam.vo.BoardVO이다 라고 생각하자 -->
+  <select id="selectAll" resultType="com.yedam.vo.BoardVO">
+    select * from tbl_board order by board_no
+  </select>
+  <!-- mapper.xml에 namespace라는 class를 만들고 selectBaord라는 메소드의 매개값의 타입은 int, 반환값은 com.yedam.vo.BoardVO이다 -->
+  <select id="selectBoard" resultType="com.yedam.vo.BoardVO" parameterType="int">
+  	select * from tbl_board where board_no = #{bno}
+  </select>
+  <!-- insert는 반환값이 int고정이라 반환값 필요 없다 -->
+  <insert id="insertBoard" parameterType="board" >
+  	insert into tbl_board (board_no, title, content, writer)
+  	values(board_seq.nextval,#{title},#{content},#{writer})
+  </insert>
+  <delete id="deleteBoard" parameterType= "int">
+  	delete from tbl_board 
+  	where board_no = #{bon}
+  </delete>
+</mapper>

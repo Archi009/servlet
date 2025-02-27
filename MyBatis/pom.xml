@@ -3,17 +3,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.yedam</groupId>
-	<artifactId>BoardWeb</artifactId>
+	<artifactId>MyBatis</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<!--maven 버전-->
 				<version>3.13.0</version>
 				<configuration>
-					<!--jdk version-->
 					<release>21</release>
 				</configuration>
 			</plugin>
@@ -95,5 +93,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>2.0.16</version>
 		</dependency>
+
+
 	</dependencies>
 </project>

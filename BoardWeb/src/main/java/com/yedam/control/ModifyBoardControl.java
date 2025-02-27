@@ -6,7 +6,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.session.SqlSession;
+
+import com.yedam.common.DataSource;
 import com.yedam.dao.BoardDAO;
+import com.yedam.mapper.BoardMapper;
 import com.yedam.vo.BoardVO;
 
 public class ModifyBoardControl implements Control {
@@ -23,10 +27,12 @@ public class ModifyBoardControl implements Control {
 			vo.setBoardNo(Integer.parseInt(bno));
 			vo.setTitle(title);
 			vo.setContent(content);
+			SqlSession session = DataSource.getInstence().openSession(true);
+			BoardMapper mapper = session.getMapper(BoardMapper.class);
+//			boolean r = bdao.updateBoard(vo);
+			int r = mapper.updateBoard(vo);
 			
-			boolean r = bdao.updateBoard(vo);
-			
-			if (r) {
+			if (r>0) {
 				System.out.println("수정 성공");
 				resp.sendRedirect("boardList.do");
 			}else {

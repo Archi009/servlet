@@ -9,10 +9,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.session.SqlSession;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.yedam.common.DataSource;
 import com.yedam.dao.ReplyDAO;
-
+import com.yedam.mapper.ReplyMapper;
 import com.yedam.vo.ReplyVO;
 
 public class AddReplyControl implements Control {
@@ -35,12 +38,15 @@ public class AddReplyControl implements Control {
 		
 //	    DB반영
 		ReplyDAO rdao = new ReplyDAO();
-		boolean run = rdao.insertReply(vo);
+//		boolean run = rdao.insertReply(vo);
+		SqlSession session = DataSource.getInstence().openSession(true);
+		ReplyMapper mapper = session.getMapper(ReplyMapper.class);
+		int run = mapper.insertReply(vo);
 		
 //		결과값
 		Map<String,Object> result = new HashMap<>();
 		
-		if(run) {
+		if(run>0) {
 			//{"retCode":"OK"}
 			result.put("retCode", "OK");
 			result.put("retVal", vo);

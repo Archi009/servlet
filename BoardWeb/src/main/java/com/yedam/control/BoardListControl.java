@@ -7,16 +7,14 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.html.HTML;
 
-import org.apache.el.parser.AstGreaterThanEqual;
+import org.apache.ibatis.session.SqlSession;
 
-import com.yedam.pageVO;
-import com.yedam.dao.BoardDAO;
+import com.yedam.common.pageVO;
+import com.yedam.common.DataSource;
+import com.yedam.mapper.BoardMapper;
 import com.yedam.vo.BoardVO;
-import com.yedam.vo.SearchVO;
-
-import oracle.jdbc.internal.KeywordValue;
+import com.yedam.common.SearchVO;
 
 public class BoardListControl implements Control {
 
@@ -39,12 +37,16 @@ public class BoardListControl implements Control {
 		SearchVO sr = new SearchVO(Integer.parseInt(page),sc,kw);
 		req.setAttribute("msg", name);
 
-		BoardDAO edao = new BoardDAO();
+//		BoardDAO edao = new BoardDAO();
 		List<BoardVO> list = null;
+		SqlSession sqlSession = DataSource.getInstence().openSession();
+		BoardMapper mapper = sqlSession.getMapper(BoardMapper.class);
+		list = mapper.selectBoard(sr);
 		
 		try {
-			list = edao.selectBoard(sr);
-		} catch (NumberFormatException | SQLException e) {
+//			list = edao.selectBoard(sr);
+//		} catch (NumberFormatException | SQLException e) {
+		}catch(NullPointerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -52,7 +54,9 @@ public class BoardListControl implements Control {
 		req.setAttribute("list", list);
 		
 		//페이징
-		int totalCnt = edao.getTotalCount(sr);
+//		int totalCnt = edao.getTotalCount(sr);
+		int totalCnt = mapper.getTotalCount(sr);
+		
 		pageVO paging = new pageVO(Integer.parseInt(page), totalCnt);
 		System.out.println(page + " " +totalCnt);
 		req.setAttribute("paging", paging);

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.mapper.BoardMapper">
+	<!-- mapper.xml에 namespace라는 class를 만들고 selectAll이라는 메소드의 반환값은 com.yedam.vo.BoardVO이다 
+		라고 생각하자 -->
+	<select id="getTotalCount" resultType="int"
+		parameterType="com.yedam.common.SearchVO">
+		select count(1) from tbl_board
+		<choose>
+			<when test="searchCondition == 'T'.toString()">
+				where title like '%'||#{keyword}||'%'
+			</when>
+			<when test="searchCondition == 'W'.toString()">
+				where writer like '%'||#{keyword}||'%'
+			</when>
+			<when test="searchCondition == 'TW'.toString()">
+				where title like '%'||#{keyword}||'%' or where writer like
+				'%'||#{keyword}||'%'
+			</when>
+		</choose>
+
+
+	</select>
+	<update id="updateCount" parameterType="int">
+		update tbl_board set view_count = view_count +1 where board_no =
+		#{boardNo}";
+	</update>
+	<select id="getBaord" resultType="board" parameterType="int">
+		select * from tbl_board where board_no = #{boardNo}
+	</select>
+	<!-- resultType이 사실 collection type이어야 하지만 collection 안의 type만 정해주면 알아서 
+		collectiontype으로 바꿔준다 -->
+	<select id="selectBoard"
+		parameterType="com.yedam.common.SearchVO" resultType="board">
+		select *
+		from (select rownum rn, a.*
+		from (select *
+		from tbl_board
+		<choose>
+			<when test="searchCondition == 'T'.toString()">
+				where title like '%'||#{keyword}||'%'
+			</when>
+			<when test="searchCondition == 'W'.toString()">
+				where writer like '%'||#{keyword}||'%'
+			</when>
+			<when test="searchCondition == 'TW'.toString()">
+				where title like '%'||#{keyword}||'%' or where writer like
+				'%'||#{keyword}||'%'
+			</when>
+		</choose>
+		order by board_no desc) a) b
+		where b.rn>= (#{page} - 1)*5 +1 <![CDATA[ and b.rn <= (#{page} *5)]]>
+	</select>
+	<insert id="insertBoard" parameterType="board">
+		insert into tbl_board ( board_no, title, content, writer,img)
+			 values(board_seq.nextval,#{title},#{content},#{writer},#{img})
+	</insert>
+	<delete id ="deleteBoard" parameterType="int">
+		delete from tbl_board where board_no = #{boardNo}
+	</delete>
+	<update id="updateBoard" parameterType="board">
+		update tbl_board 
+		set title =#{title}, content =#{content}
+		where board_no = #{boardNo}
+	</update>
+</mapper>

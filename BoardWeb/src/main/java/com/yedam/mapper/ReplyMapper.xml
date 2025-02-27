@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.mapper.ReplyMapper">
+	<!-- mapper.xml에 namespace라는 class를 만들고 selectAll이라는 메소드의 반환값은 com.yedam.vo.BoardVO이다 
+		라고 생각하자 -->
+	
+	<select id="chartData" resultType="reply" parameterType="int">
+		select e.department_id , d.department_name, count(1) cnt 
+				 from employees e  
+				 join departments d 
+				 on e.department_id = d.department_id 
+				 group by e.department_id, d.department_name
+	</select>
+	<!-- resultType이 사실 collection type이어야 하지만 collection 안의 type만 정해주면 알아서 
+		collectiontype으로 바꿔준다 -->
+	<select id="replyCount"
+		parameterType="int" resultType="int">
+		select count(1) from tbl_reply where board_no = #{boardNo}
+	</select>
+	<!-- parameter값이 같은 타입으로 두개인경우 mapper인터페이스의 메소드 정의 에 따른 param 값에 맞게 넣어준다. -->
+	<!-- <select id="replyList" parameterType="int" resultType="reply">	SELECT tbl_a.*
+				FROM(SELECT /*+ INDEX_DESC (r pk_reply) */ 
+				       rownum rn, reply_no, reply, replyer, board_no, reply_date 
+				FROM tbl_reply r  
+				WHERE board_no = #{boardNo}) tbl_a 
+				WHERE tbl_a.rn > (#{page} -1) *5 
+				<![CDATA[and tbl_a.rn<= #{page} * 5]]> 
+	</select> -->
+	<!-- 목록 -->
+	<select id="replyList" parameterType="hashmap" resultType="reply">
+		SELECT tbl_a.*
+				FROM(SELECT /*+ INDEX_DESC (r pk_reply) */ 
+				       rownum rn, reply_no, reply, replyer, board_no, reply_date 
+				FROM tbl_reply r  
+				WHERE board_no = #{boardNo}) tbl_a 
+				WHERE tbl_a.rn > (#{page} -1) *5 
+				<![CDATA[and tbl_a.rn<= #{page} * 5]]> 
+	</select>
+	<!-- 상세 -->
+	
+	
+	<select id="selectReply" parameterType="int" resultType="reply">
+	select reply_no, reply, replyer, reply_date from tbl_reply where reply_no = #{replyNo}
+	</select>
+	<!-- 등록 -->
+	<insert id="insertReply" parameterType="reply">
+		<selectKey keyProperty="replyNo" resultType="int" order="BEFORE">
+			select reply_seq.nextval from dual
+		</selectKey>
+		insert into tbl_reply (reply_no, reply, replyer, board_no)
+				  values (#{replyNo},#{reply},#{replyer},#{boardNo})
+	</insert>
+	
+	
+	<!-- 삭제 -->
+	<delete id="delReply" parameterType="int">
+	delete from tbl_reply where reply_no = #{replyNo}
+	</delete>
+</mapper>

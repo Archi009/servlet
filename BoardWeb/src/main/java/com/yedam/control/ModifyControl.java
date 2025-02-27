@@ -7,7 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
+
+import com.yedam.common.DataSource;
 import com.yedam.dao.BoardDAO;
+import com.yedam.mapper.BoardMapper;
 import com.yedam.vo.BoardVO;
 
 public class ModifyControl implements Control {
@@ -17,8 +21,10 @@ public class ModifyControl implements Control {
 		String bno = req.getParameter("bno");
 		
 		BoardDAO bdao = new BoardDAO();
-	
-		BoardVO board = bdao.getBaord(Integer.parseInt(bno));
+		SqlSession sqlSession = DataSource.getInstence().openSession(true);
+		BoardMapper mapper = sqlSession.getMapper(BoardMapper.class);
+//		BoardVO board = bdao.getBaord(Integer.parseInt(bno));
+		BoardVO board = mapper.getBaord(Integer.parseInt(bno));
 		
 		//세션 아이디 vs. 글작성 아이디.
 		HttpSession session = req.getSession();

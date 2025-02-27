@@ -5,9 +5,13 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.session.SqlSession;
+
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.yedam.common.DataSource;
 import com.yedam.dao.BoardDAO;
+import com.yedam.mapper.BoardMapper;
 import com.yedam.vo.BoardVO;
 
 public class AddBoardControl implements Control {
@@ -38,8 +42,11 @@ public class AddBoardControl implements Control {
 		bvo.setWriter(writer);
 		bvo.setImg(img);
 		BoardDAO bdao = new BoardDAO();
+		SqlSession sqlSession = DataSource.getInstence().openSession(true);
+		BoardMapper mapper = sqlSession.getMapper(BoardMapper.class);
 		
-		if(bdao.insertBoard(bvo)) {
+//		if(bdao.insertBoard(bvo)) {
+		if(mapper.insertBoard(bvo)>0) {
 			
 			 //forward vs. redirect
 		 resp.sendRedirect("boardList.do");

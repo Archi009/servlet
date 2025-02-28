@@ -13,53 +13,43 @@ import org.apache.ibatis.session.SqlSession;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.yedam.common.DataSource;
-import com.yedam.dao.ReplyDAO;
 import com.yedam.mapper.ReplyMapper;
-import com.yedam.vo.ReplyVO;
 
-public class AddReplyControl implements Control {
+public class InsertFull implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setContentType("text/json;charset=utf-8");
-		//		댓글내용, 작성자, 원본 글번호
-		String reply = req.getParameter("reply");
-		String replyer = req.getParameter("replyer");
-		String bno = req.getParameter("bno");
-		System.out.println(bno);
+		// TODO Auto-generated method stub
+		String title = req.getParameter("title");
+		String start = req.getParameter("start");
+		String end = req.getParameter("end");
 		
-//		매개값
-		ReplyVO vo = new ReplyVO();
+		Map<String, String> map = new HashMap<>();
 		
-		vo.setBoardNo(Integer.parseInt(bno));
-		vo.setReply(reply);
-		vo.setReplyer(replyer);
+		map.put("title", title);
+		map.put("start", start);
+		map.put("end", end);
 		
-//	    DB반영
-		ReplyDAO rdao = new ReplyDAO();
-//		boolean run = rdao.insertReply(vo);
 		SqlSession session = DataSource.getInstence().openSession(true);
 		ReplyMapper mapper = session.getMapper(ReplyMapper.class);
-		int run = mapper.insertReply(vo);
 		
-//		결과값
-		Map<String,Object> result = new HashMap<>();
+		int r = mapper.insertEvent(map);
 		
-		if(run>0) {
+		
+		if(r>0) {
 			//{"retCode":"OK"}
-			result.put("retCode", "OK");
-			result.put("retVal", vo);
+			map.put("retCode", "OK");
+			
 //			resp.getWriter().print("{\"retCode\":\"OK\"}");
 		}else {
 //			resp.getWriter().print("{\"retCode\":\"NG\"}");
-			result.put("retCode", "NG");
+			map.put("retCode", "NG");
 		}
 		Gson gson =new GsonBuilder().create();
-		String json = gson.toJson(result);
+		String json = gson.toJson(map);
 		
 		resp.getWriter().print(json);
+		
 	}
 
-	}
-
-
+}

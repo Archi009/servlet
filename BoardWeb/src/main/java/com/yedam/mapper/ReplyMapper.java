@@ -3,6 +3,7 @@ package com.yedam.mapper;
 import java.util.List;
 import java.util.Map;
 
+import com.yedam.vo.BoardVO;
 import com.yedam.vo.ReplyVO;
 
 public interface ReplyMapper {
@@ -15,4 +16,9 @@ public interface ReplyMapper {
 	public ReplyVO selectReply(int replyNo);
 	public int insertReply(ReplyVO vo);
 	public int delReply(int replyNo);
+//	datatable
+	public List<ReplyVO> replyListDtable (int bno);
+//	calendar
+	public List<Map<String, Object>> fullData();
+	public int insertEvent (Map<String, String>map);
 }

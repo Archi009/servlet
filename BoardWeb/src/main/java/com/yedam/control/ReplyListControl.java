@@ -1,8 +1,10 @@
 package com.yedam.control;
 
+import java.awt.Robot;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,11 +38,13 @@ public class ReplyListControl implements Control {
 		SqlSession session = DataSource.getInstence().openSession(true);
 		ReplyMapper mapper = session.getMapper(ReplyMapper.class);
 		List<ReplyVO> list = mapper.replyList(replyParam);
+
 //		Gson 활용
 //		Gson gson = new GsonBuilder().setPrettyPrinting().create();콘솔에 이쁘게 보여줌
+
+	
 		Gson gson = new GsonBuilder().create();
-		String json = gson.toJson(list);  // 자바객체 => json 문자열
-		
+		String json = gson.toJson(list);  // 
 //		System.out.println(json);//콘솔
 		resp.getWriter().print(json);//웹브라우져
 		

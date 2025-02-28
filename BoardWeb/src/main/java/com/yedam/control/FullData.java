@@ -1,6 +1,8 @@
 package com.yedam.control;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -8,32 +10,25 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.SqlSession;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.yedam.common.DataSource;
-import com.yedam.dao.ReplyDAO;
 import com.yedam.mapper.ReplyMapper;
 
-public class RemoveReplyControl implements Control {
+public class FullData implements Control {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//댓글번호	
-		String rno = req.getParameter("rno");
-		System.out.println(rno+"rno");
-		//DB.
-		ReplyDAO rdao =new ReplyDAO();
-//		boolean run = rdao.delReply(Integer.parseInt(rno));
+		resp.setContentType("text/json;charset=utf-8");
 		SqlSession session = DataSource.getInstence().openSession(true);
 		ReplyMapper mapper = session.getMapper(ReplyMapper.class);
-		int run = mapper.delReply(Integer.parseInt(rno));
-		System.out.println(run);
-		//json
-		if(run>0) {
-			//{"retCode" : "OK"}
-			resp.getWriter().print("{\"retCode\" : \"OK\"}");
-		}else {
-			resp.getWriter().print("{\"retCode\" : \"NG\"}");
-		}
+		List<Map<String, Object>> list = mapper.fullData();
+		
+		Gson gson = new GsonBuilder().create();
+		String json = gson.toJson(list);
+		
+		resp.getWriter().print(json);
 		
 	}
-
+	
 }

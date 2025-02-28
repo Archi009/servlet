@@ -21,7 +21,11 @@ import com.yedam.control.ChartControl;
 import com.yedam.control.ChartDataControl;
 import com.yedam.control.Control;
 import com.yedam.control.DataControl;
+import com.yedam.control.DataTableControl;
 import com.yedam.control.DeleteBoardControl;
+import com.yedam.control.FullCalendarControl;
+import com.yedam.control.FullData;
+import com.yedam.control.InsertFull;
 import com.yedam.control.LoginControl;
 import com.yedam.control.LogoutControl;
 import com.yedam.control.MainControl;
@@ -75,6 +79,14 @@ public class FrontController extends HttpServlet{
 		map.put("/addReply.do",new AddReplyControl());
 		map.put("/removeReply.do", new RemoveReplyControl());
 		map.put("/getReplyCnt.do", new ReplyCntControl());
+//		datatable api
+		map.put("/datatable.do", new DataTableControl());
+//		fullcalendar
+		map.put("/full.do", new FullCalendarControl());
+		map.put("/fullData.do", new FullData());
+		map.put("/fullInsert.do", new InsertFull());
+		
+		
 //		차트
 		map.put("/chart.do", new ChartControl());
 		map.put("/chartData.do", new ChartDataControl());

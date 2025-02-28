@@ -40,7 +40,7 @@ function showPagingList() {
 		function(result) {
 			console.log(result);
 			let target = document.querySelector('div.footer>nav>ul')
-      target.innerHTML = '';
+			target.innerHTML = '';
 			let html = ''
 			const totalCnt = result.totalCnt;
 			// startPage, endPage, currPagge 
@@ -57,9 +57,9 @@ function showPagingList() {
 			//링크 생성
 			console.log(prev);
 			console.log(next);
-      console.log(currPagge+"currentPage");
-      console.log(endPage+"endpage")
-      //이전페이지 존재 유무 확인
+			console.log(currPagge + "currentPage");
+			console.log(endPage + "endpage")
+			//이전페이지 존재 유무 확인
 			if (prev) {
 				html = `<li class="page-item ">
 					<a class="page-link" href="#"	tabindex="-1" data-page="${startPage - 1}">Previous</a></li>`
@@ -71,14 +71,14 @@ function showPagingList() {
 			target.insertAdjacentHTML('beforeend', html)
 			console.log(html);
 			for (let p = startPage; p <= endPage; p++) {
-        if(p==currPagge){
-          html = `<li class="page-item active" ><a class="page-link" href="#" data-page="${p}">${p}</a></li>`
-        }else{
-          html = `<li class="page-item"><a class="page-link" href="#" data-page="${p}">${p}</a></li>`
-        }
+				if (p == currPagge) {
+					html = `<li class="page-item active" ><a class="page-link" href="#" data-page="${p}">${p}</a></li>`
+				} else {
+					html = `<li class="page-item"><a class="page-link" href="#" data-page="${p}">${p}</a></li>`
+				}
 				target.insertAdjacentHTML('beforeend', html)
 			}
-      //이후페이지 존재 유무 확인
+			//이후페이지 존재 유무 확인
 			if (next) {
 				html = `<li class="page-item ">
          <a class="page-link" href="#"	tabindex="-1" data-page="${endPage + 1}">Next</a></li>`
@@ -119,9 +119,9 @@ document.querySelector("#addReply").addEventListener('click', function() {
 			if (result.retCode == 'OK') {
 				// let target = document.querySelector('.reply>.content>ul')
 				// target.insertAdjacentHTML('beforeend', makeReply(result.retVal))
-        page = 1; //등록하면 첫 페이지 보여주기
-        showPagelist()
-        showPagingList()
+				page = 1; //등록하면 첫 페이지 보여주기
+				showPagelist()
+				showPagingList()
 				reply.value = ''
 
 			}
@@ -136,20 +136,20 @@ document.querySelector("#addReply").addEventListener('click', function() {
 
 //삭제
 function deleteRow(rno) {
-  if(!confirm("삭제하시겠습니까?")){
-    alert("취소합니다")
-    return
-  }
+	if (!confirm("삭제하시겠습니까?")) {
+		alert("취소합니다")
+		return
+	}
 	svc.removeReply(rno,
 		function(result) {//성공함수
 			if (result.retCode == 'OK') {
-       
-        
 
-          document.querySelector("li[data-id = '" + rno + "']").remove()
-          showPagelist()
-          showPagingList()
-        
+
+
+				document.querySelector("li[data-id = '" + rno + "']").remove()
+				showPagelist()
+				showPagingList()
+
 			}
 		},
 		function(err) {//실패함수

@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
        console.log(arg);
        console.log("title"+title,"start"+arg.start,"end"+arg.end);
       // let data = {"title":title,"start":arg.start,"end":arg.end}
-      //  fetch("/fullInsert.do", {
+      //  fetch("fullInsert.do", {
       //   method: "POST", 
       //   mode: "cors", 
       //   cache: "no-cache", 
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // .then(result =>{
       //   console.log(result);
       // })
-      fetch("/fullInsert.do?title="+title+"&start="+arg.start+"&end="+arg.end)
+      fetch("fullInsert.do?title="+title+"&start="+arg.start+"&end="+arg.end)
       .then(result=>result.json())
       .then(result=>{
         console.log(result);

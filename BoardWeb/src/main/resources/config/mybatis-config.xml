@@ -10,6 +10,7 @@
   <typeAlias alias="board" type="com.yedam.vo.BoardVO"/>
   <typeAlias alias="reply" type="com.yedam.vo.ReplyVO"/>
   <typeAlias alias="search" type="com.yedam.common.SearchVO"/>
+  <typeAlias alias="cal" type="com.yedam.vo.CalVO"/>
  
 </typeAliases>
   <environments default="development">

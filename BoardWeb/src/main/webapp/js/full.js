@@ -29,7 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
      select: function(arg) {
        var title = prompt('Event Title:');
        console.log(arg);
-       console.log("title"+title,"start"+arg.start,"end"+arg.end);
+       console.log("title"+title,"start"+makeDate(arg.start),"end"+makeDate(arg.end));
+      
       // let data = {"title":title,"start":arg.start,"end":arg.end}
       //  fetch("fullInsert.do", {
       //   method: "POST", 
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // .then(result =>{
       //   console.log(result);
       // })
-      fetch("fullInsert.do?title="+title+"&start="+arg.start+"&end="+arg.end)
+      fetch("fullInsert.do?title="+title+"&start="+makeDate(arg.start)+"&end="+makeDate(arg.end))
       .then(result=>result.json())
       .then(result=>{
         console.log(result);
@@ -64,8 +65,26 @@ document.addEventListener('DOMContentLoaded', function() {
        calendar.unselect()
      },
      eventClick: function(arg) {
+      console.dir(arg);
+      console.log(arg.event._def.title);
+      console.log(arg.event._instance.range.end);
+      console.log(arg.event._instance.range.start);
+      const title =arg.event._def.title
+      const start = makeDate(arg.event.start)
+      const end = makeDate(arg.event.end)
        if (confirm('Are you sure you want to delete this event?')) {
+          let data = {"title":title,"start":start,"end":end}
+       fetch("fullDel.do", {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json", 
+        },
+        body: JSON.stringify(data)
+      }).then(result => result.json())
+      .then(result =>{
+        console.log(result);
          arg.event.remove()
+      })
        }
      },
      editable: true,
@@ -75,3 +94,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
    calendar.render();}
  });
+
+//삭제 함수
+function delcal(){
+
+}
+
+
+
+ //날짜 용량에 맞게 변환
+ function makeDate(data){
+  let date = new Date(data)
+  let y = date.getFullYear()
+  let m = String(date.getMonth()+1).padStart(2,"0")
+  let d = String(date.getDate()).padStart(2,"0")
+  let r = (y+'-'+m+'-'+d);
+  return r
+ }

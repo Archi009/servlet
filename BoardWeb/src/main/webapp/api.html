@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=3.0">
+  <title>Document</title>
+</head>
+<body>
+  <!--api.html-->
+  <script>
+    fetch("https://api.odcloud.kr/api/15077586/v1/centers?page=1&perPage=284&serviceKey=fnNvgI%2F85j%2FrXVYeAtfnN1hGMK65xH8FI5d1cG2%2By9hoNLV17dHqrp2VmlXr%2BrKWCccdvk95IS5QYa82JbKilg%3D%3D")
+    .then(result=>result.json())
+    .then(result=>{
+      console.log(result);
+    })
+
+  </script>
+</body>
+</html>

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.yedam.vo.BoardVO;
+import com.yedam.vo.CalVO;
 import com.yedam.vo.ReplyVO;
 
 public interface ReplyMapper {
@@ -21,4 +22,5 @@ public interface ReplyMapper {
 //	calendar
 	public List<Map<String, Object>> fullData();
 	public int insertEvent (Map<String, String>map);
+	public int delEvent (CalVO vo);
 }
